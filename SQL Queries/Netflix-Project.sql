@@ -1,28 +1,12 @@
-use netflix_dataset;
-select * from netflix
-order by release_year;
-
-select director ,count(director) as count_of_director from netflix
-where director="Not Availaible";
-
 update netflix 
 set director = null
 where director='';
-
-select count(*) 
-from netflix 
-where country is null;
-
 
 set sql_safe_updates=0;
 
 update netflix 
 set country=null
 where country='';
-
-select release_year , count(release_year) from netflix 
-group by release_year
-order by count(release_year) desc;
 
 update netflix 
 set rating="Not rated" 
@@ -31,11 +15,6 @@ where rating='';
 update netflix 
 set duration="Unknown"
 where duration='';
-
-select count(rating) from netflix 
-where rating='';
-
-SELECT COUNT(*) FROM netflix WHERE director="Not Availaible";
 
  # 1. Count the number of Movies vs TV Shows.
 select distinct type , count(type) as count_of_type from netflix 
@@ -179,7 +158,7 @@ from profit)
 select * from ranking
 where ranks <=3;
 
--- 17. Among titles where average watch time is above the overall platform average, 
+# 17. Among titles where average watch time is above the overall platform average, 
 -- identify the country that contributes the highest total views, and show the top contributing title from that country.
 
 with cte1 as(
