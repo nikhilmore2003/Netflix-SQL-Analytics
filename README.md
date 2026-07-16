@@ -1,108 +1,166 @@
+<div align="center">
+
 # 🎬 Netflix SQL Analytics
 
-::: {align="center"}
-`<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=E50914&height=280&section=header&text=Netflix%20SQL%20Analytics&fontSize=52&fontColor=ffffff&animation=fadeIn&fontAlignY=38"/>`{=html}
-
-### End-to-End SQL Data Analysis Project
+### End-to-End SQL Data Analysis using MySQL
 
 **Analyze • Clean • Query • Generate Business Insights**
 
 ![MySQL](https://img.shields.io/badge/Database-MySQL-00758F?style=for-the-badge&logo=mysql&logoColor=white)
 ![SQL](https://img.shields.io/badge/Language-SQL-F29111?style=for-the-badge)
-![Project](https://img.shields.io/badge/Project-Netflix-E50914?style=for-the-badge)
-![Status](https://img.shields.io/badge/Status-Completed-success?style=for-the-badge)
-:::
+![Netflix](https://img.shields.io/badge/Project-Netflix-E50914?style=for-the-badge)
+![Completed](https://img.shields.io/badge/Status-Completed-success?style=for-the-badge)
+![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 
-------------------------------------------------------------------------
+</div>
 
-## 📊 Project Statistics
+---
 
-  Metric                 Value
-  ---------------- -----------
-  Netflix Titles     **8,807**
-  Datasets               **3**
-  SQL Questions         **17**
-  SQL Concepts         **15+**
+# 📊 Project Statistics
 
-------------------------------------------------------------------------
+| Metric | Value |
+|---------|------:|
+| 🎬 Netflix Titles | **8,807** |
+| 📂 Datasets | **3** |
+| ❓ SQL Business Questions | **17** |
+| 💡 Additional Insights | **10+** |
+| 🛠 SQL Concepts Used | **15+** |
 
-## 📌 Project Overview
+---
 
-This project analyzes Netflix's content catalog using **MySQL** by
-combining three datasets:
+# 📑 Table of Contents
 
--   netflix.csv
--   netflix_content_costs.csv
--   netflix_viewership.csv
+- [📌 Project Overview](#-project-overview)
+- [🎯 Objectives](#-objectives)
+- [📂 Dataset Information](#-dataset-information)
+- [🧹 Data Cleaning](#-data-cleaning)
+- [🗄 Database Schema](#-database-schema)
+- [🛠 SQL Concepts Used](#-sql-concepts-used)
+- [📊 Business Questions Solved](#-business-questions-solved)
+- [💡 Additional Insights](#-additional-insights)
+- [📁 Repository Structure](#-repository-structure)
+- [🚀 Tech Stack](#-tech-stack)
+- [📸 Results](#-results)
+- [👨‍💻 Author](#-author)
 
-The project demonstrates data cleaning, joins, CTEs, window functions,
-ranking functions and business analytics.
+---
 
-------------------------------------------------------------------------
+# 📌 Project Overview
 
-## 🎯 Objectives
+This project analyzes Netflix's content catalog using **MySQL** by combining three related datasets.
 
--   Clean raw datasets
--   Build relational database
--   Solve 17 SQL business questions
--   Generate business insights
+The project demonstrates practical SQL skills including:
 
-------------------------------------------------------------------------
+- Data Cleaning
+- SQL Joins
+- Aggregate Functions
+- Window Functions
+- Common Table Expressions (CTEs)
+- Ranking Functions
+- Business Analytics
 
-## 📂 Dataset Information
+---
 
-  Dataset                     Description
-  --------------------------- ---------------------------------------
-  netflix.csv                 Netflix content information
-  netflix_content_costs.csv   Production, marketing costs & revenue
-  netflix_viewership.csv      Viewership statistics
+# 🎯 Objectives
 
-------------------------------------------------------------------------
+- Clean raw datasets
+- Import data into MySQL
+- Build relationships between multiple tables
+- Solve 17 business SQL problems
+- Generate meaningful business insights
+- Present findings professionally
 
-## 🧹 Data Cleaning
+---
 
--   Checked missing values
--   Handled NULL values
--   Verified duplicate records
--   Standardized categorical values
+# 📂 Dataset Information
 
-------------------------------------------------------------------------
+| Dataset | Description |
+|----------|-------------|
+| **netflix.csv** | Netflix content information |
+| **netflix_content_costs.csv** | Production cost, marketing cost & estimated revenue |
+| **netflix_viewership.csv** | Viewership statistics and average watch time |
 
-## 🛠 SQL Concepts Used
+---
 
--   SELECT
--   WHERE
--   GROUP BY
--   HAVING
--   ORDER BY
--   CASE
--   INNER JOIN
--   CTE
--   Window Functions
--   ROW_NUMBER()
--   RANK()
+# 🧹 Data Cleaning
 
-------------------------------------------------------------------------
+The following preprocessing steps were performed before analysis.
 
-## 📊 Business Questions Solved
+- ✅ Checked missing values
+- ✅ Handled NULL values
+- ✅ Verified duplicate records
+- ✅ Standardized categorical values
+- ✅ Prepared data for SQL analysis
 
-All 17 required SQL business questions have been solved.
+---
 
-------------------------------------------------------------------------
+# 🗄 Database Schema
 
-## 💡 Additional Insights
+> ER Diagram will be added after project completion.
 
--   Movie vs TV Show comparison
--   Revenue vs Production Cost
--   Country-wise profitability
--   Genre performance
--   Watch time trends
+---
 
-------------------------------------------------------------------------
+# 🛠 SQL Concepts Used
 
-## 📁 Repository Structure
+- SELECT
+- WHERE
+- GROUP BY
+- HAVING
+- ORDER BY
+- LIMIT
+- CASE
+- Aggregate Functions
+- INNER JOIN
+- LEFT JOIN
+- Common Table Expressions (CTEs)
+- Window Functions
+- ROW_NUMBER()
+- RANK()
+- DATE Functions
+- String Functions
 
-``` text
+---
+
+# 📊 Business Questions Solved
+
+| No. | Business Question | Status |
+|-----|-------------------|:------:|
+| 1 | Count Movies vs TV Shows | ✅ |
+| 2 | Most Common Rating | ✅ |
+| 3 | Movies Released in a Specific Year | ✅ |
+| 4 | Top 5 Countries | ✅ |
+| 5 | Longest Movie | ✅ |
+| 6 | Recently Added Content | ✅ |
+| 7 | Director Analysis | ✅ |
+| 8 | TV Shows with More Than 5 Seasons | ✅ |
+| 9 | Genre Analysis | ✅ |
+| 10 | Average Content Released in India | ✅ |
+| 11 | Documentary Movies | ✅ |
+| 12 | Missing Director Analysis | ✅ |
+| 13 | Salman Khan Movie Analysis | ✅ |
+| 14 | Top Indian Actors | ✅ |
+| 15 | Content Categorization | ✅ |
+| 16 | Most Profitable Titles | ✅ |
+| 17 | Highest Contributing Country | ✅ |
+
+---
+
+# 💡 Additional Insights
+
+Apart from the required questions, additional analysis can include:
+
+- 📈 Revenue vs Production Cost
+- 🌍 Country-wise Profitability
+- 🎭 Genre Performance
+- 🎬 Movie vs TV Show Comparison
+- ⏱ Watch Time Analysis
+- 💰 Highest ROI Titles
+
+---
+
+# 📁 Repository Structure
+
+```text
 Netflix-SQL-Analytics
 │
 ├── Assets
@@ -116,25 +174,57 @@ Netflix-SQL-Analytics
 └── LICENSE
 ```
 
-------------------------------------------------------------------------
+---
 
-## 🚀 Tech Stack
+# 🚀 Tech Stack
 
--   MySQL Workbench
--   SQL
--   Git
--   GitHub
+- MySQL Workbench
+- SQL
+- Git
+- GitHub
 
-------------------------------------------------------------------------
+---
 
-## 👨‍💻 Author
+# 📸 Results
 
-**Nikhil More**
+SQL query output screenshots will be uploaded after completing the project.
 
-GitHub: https://github.com/nikhilmore2003
+---
 
-LinkedIn: To be added.
+# 📚 Key Learnings
 
-------------------------------------------------------------------------
+- Data Cleaning
+- Relational Database Design
+- SQL Query Optimization
+- Window Functions
+- Business Analytics
+- Insight Generation
 
-⭐ If you found this project useful, consider giving it a Star!
+---
+
+# 🔮 Future Improvements
+
+- Power BI Dashboard
+- Tableau Dashboard
+- Python Exploratory Data Analysis (EDA)
+- Interactive Visualizations
+
+---
+
+# 👨‍💻 Author
+
+## Nikhil More
+
+**GitHub:**  
+https://github.com/nikhilmore2003
+
+**LinkedIn:**  
+*(Will be added after project completion.)*
+
+---
+
+<div align="center">
+
+⭐ **If you found this project useful, consider giving it a Star!**
+
+</div>
