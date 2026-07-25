@@ -187,7 +187,7 @@ Netflix-SQL-Analytics
 
 # 📸 Results
 
-SQL query output screenshots will be uploaded after completing the project.
+SQL query output screenshots are uploaded in the Output Folder.
 
 ---
 
