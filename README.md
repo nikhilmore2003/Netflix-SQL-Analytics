@@ -219,7 +219,7 @@ SQL query output screenshots will be uploaded after completing the project.
 https://github.com/nikhilmore2003
 
 **LinkedIn:**  
-*(Will be added after project completion.)*
+https://www.linkedin.com/in/nikhil-more-a43a2b259/
 
 ---
 
