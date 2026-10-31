@@ -126,7 +126,7 @@
               <span class="status" id="status">Loading database…</span>
             </div>
             <div class="insight-line" id="insight"></div>
-            <div class="table-wrap result-wrap" id="result"><div class="loading">Loading the database (≈2 MB)…</div></div>
+            <div class="table-wrap result-wrap" id="result"><div class="loading">Loading the database (≈4 MB)…</div></div>
             <p class="muted">Tip: press <kbd>Ctrl</kbd> + <kbd>Enter</kbd> to run. Tables: <code>netflix</code>, <code>netflix_content_costs</code>, <code>netflix_viewership</code>.</p>
           </div>
         </div>
@@ -248,7 +248,7 @@
 
     async function loadDb() {
       var SQL = await initSqlJs({ locateFile: function (f) { return "site/vendor/" + f; } });
-      var resp = await fetch("site/netflix.db.gz");
+      var resp = await fetch("site/netflix.db/netflix.db");
       if (!resp.ok) throw new Error("Could not download the database (" + resp.status + ")");
       var buf;
       var bytes = new Uint8Array(await resp.clone().arrayBuffer());
