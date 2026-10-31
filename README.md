@@ -12,6 +12,10 @@
 ![Completed](https://img.shields.io/badge/Status-Completed-success?style=for-the-badge)
 ![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 
+<a href="https://nikhilmore2003.github.io/Netflix-SQL-Analytics/"><img src="https://img.shields.io/badge/🔴_LIVE-Run_the_Queries_Live-2dd4bf?style=for-the-badge"/></a>
+
+**👉 [Run the Queries Live](https://nikhilmore2003.github.io/Netflix-SQL-Analytics/)**
+
 </div>
 
 ---
@@ -96,7 +100,7 @@ The following preprocessing steps were performed before analysis.
 
 # 🗄 Database Schema
 
-> ER Diagram will be added after project completion.
+![Netflix ER Diagram](ER%20Diagram/Netflix%20ER%20Diagram.png)
 
 ---
 
@@ -188,6 +192,8 @@ Netflix-SQL-Analytics
 # 📸 Results
 
 SQL query output screenshots are uploaded in the Output Folder.
+
+🌐 **Run every query yourself in the browser:** https://nikhilmore2003.github.io/Netflix-SQL-Analytics/
 
 ---
 

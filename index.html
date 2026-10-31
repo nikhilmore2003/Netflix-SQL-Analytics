@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Netflix SQL Analytics — Live SQL Playground | Nikhil More</title>
+  <meta name="description" content="Run Nikhil More's 17 Netflix business SQL queries live in your browser on 8,807 titles across 3 joined tables." />
+  <meta property="og:title" content="Netflix SQL Analytics — Live SQL Playground" />
+  <meta property="og:description" content="17 business questions on Netflix data, runnable in the browser. Joins, CTEs, window functions." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%2314b8a6'/><rect x='7' y='17' width='4' height='8' rx='1' fill='white'/><rect x='14' y='11' width='4' height='14' rx='1' fill='white'/><rect x='21' y='7' width='4' height='18' rx='1' fill='white'/></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <script src="site/theme.js"></script>
+  <link rel="stylesheet" href="site/project.css" />
+  <style>
+    .nf { color: #E50914; font-weight: 800; letter-spacing: .02em; }
+    .pg { display: grid; grid-template-columns: 330px minmax(0, 1fr); gap: 16px; align-items: start; }
+    .qlist { padding: 8px; max-height: 760px; overflow: auto; position: sticky; top: 82px; }
+    .qitem { display: grid; grid-template-columns: 34px 1fr; gap: 8px; align-items: start; width: 100%; text-align: left; padding: 10px; border-radius: 12px; color: var(--text-2); font-size: .9rem; line-height: 1.4; transition: background .2s, color .2s; }
+    .qitem:hover { background: var(--surface-2); color: var(--text); }
+    .qitem.active { background: var(--accent-soft); color: var(--text); }
+    .qnum { font-family: "JetBrains Mono", monospace; font-size: .78rem; font-weight: 500; color: var(--accent); background: var(--accent-soft); border-radius: 8px; padding: 3px 0; text-align: center; }
+    .qitem.active .qnum { background: var(--accent); color: #0b1120; }
+    .editor-card { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; min-width: 0; }
+    .qtitle { font-size: 1.25rem; }
+    textarea.sql {
+      width: 100%; min-height: 240px; resize: vertical; font-family: "JetBrains Mono", ui-monospace, monospace; font-size: .88rem; line-height: 1.6;
+      background: var(--code-bg); color: var(--text); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; tab-size: 2; outline: none;
+    }
+    textarea.sql:focus { border-color: var(--accent); }
+    .toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .status { font-size: .85rem; color: var(--text-3); margin-left: auto; }
+    .status.err { color: #f87171; }
+    kbd { font-family: "JetBrains Mono", monospace; font-size: .75rem; border: 1px solid var(--border); border-bottom-width: 2px; border-radius: 6px; padding: 1px 6px; background: var(--surface-2); }
+    .result-wrap { max-height: 420px; }
+    .insight-line { display: flex; gap: 10px; align-items: flex-start; background: var(--accent-soft); border-radius: 12px; padding: 12px 14px; font-size: .92rem; color: var(--text); }
+    .insight-line:empty { display: none; }
+    .loading { display: grid; place-items: center; min-height: 140px; color: var(--text-3); font-size: .92rem; }
+    .schema { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .schema .card { padding: 18px; }
+    .schema code { font-family: "JetBrains Mono", monospace; font-size: .82rem; }
+    .schema ul { list-style: none; display: grid; gap: 4px; margin-top: 8px; }
+    .schema li { font-family: "JetBrains Mono", monospace; font-size: .8rem; color: var(--text-2); display: flex; justify-content: space-between; gap: 8px; }
+    .schema li span { color: var(--text-3); }
+    .schema li.pk { color: var(--accent-2); }
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    td.null { color: var(--text-3); font-style: italic; }
+    table.data td { max-width: 420px; overflow: hidden; text-overflow: ellipsis; }
+    @media (max-width: 1000px) {
+      .pg { grid-template-columns: minmax(0, 1fr); }
+      .qlist { position: static; max-height: 300px; }
+      .schema, .stats { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 560px) { .schema { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="bg-grid" aria-hidden="true"></div>
+
+  <header class="nav">
+    <div class="container nav-inner">
+      <a href="https://nikhilmore2003.github.io/" class="logo" aria-label="Nikhil More portfolio">
+        <span class="logo-mark">NM</span><span>Nikhil<span style="color:var(--accent)">.</span></span>
+      </a>
+      <nav class="nav-links">
+        <a href="#playground">SQL Playground</a>
+        <a href="#schema">Schema</a>
+        <a href="#skills">SQL Skills</a>
+      </nav>
+      <div class="nav-actions">
+        <a class="btn btn-ghost btn-sm" href="https://github.com/nikhilmore2003/Netflix-SQL-Analytics" target="_blank" rel="noopener">GitHub</a>
+        <button class="theme-toggle" aria-label="Switch between dark and light theme" title="Switch theme">
+          <svg class="icon-sun" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <a class="back" href="https://nikhilmore2003.github.io/#projects">← Back to portfolio</a>
+        <div class="eyebrow"><span class="dot"></span> Live SQL playground</div>
+        <h1><span class="nf">NETFLIX</span> <span class="gradient-text">SQL Analytics</span></h1>
+        <p class="lead">I cleaned three related Netflix datasets, loaded them into MySQL and answered 17 business questions with joins, CTEs and window functions. Here you can run every query yourself, right in your browser. Pick a question, edit the SQL and press Run.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#playground">Run the queries ↓</a>
+          <a class="btn btn-ghost" href="SQL%20Queries/Netflix-Project.sql" target="_blank" rel="noopener">Original .sql file</a>
+          <a class="btn btn-ghost" href="Presentation/Netflix%20ppt.pptx" download>Presentation</a>
+          <a class="btn btn-ghost" href="https://github.com/nikhilmore2003/Netflix-SQL-Analytics" target="_blank" rel="noopener">Source on GitHub</a>
+        </div>
+        <div class="tags"><span>MySQL</span><span>Joins</span><span>CTEs</span><span>Window Functions</span><span>Data Cleaning</span><span>Business Analysis</span></div>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:8px">
+      <div class="container stats">
+        <div class="kpi"><div class="label">Titles</div><div class="value">8,807</div></div>
+        <div class="kpi"><div class="label">Related tables</div><div class="value">3</div></div>
+        <div class="kpi"><div class="label">Business questions</div><div class="value">17</div></div>
+        <div class="kpi"><div class="label">Countries</div><div class="value">120+</div></div>
+      </div>
+    </section>
+
+    <!-- ================= PLAYGROUND ================= -->
+    <section class="section" id="playground">
+      <div class="container">
+        <div class="section-head">
+          <h2>Try the <span class="gradient-text">queries</span></h2>
+          <p>A full copy of the cleaned database runs inside your browser, so nothing is sent to a server. The queries are written for SQLite here, with small syntax changes from my original MySQL file.</p>
+        </div>
+        <div class="pg">
+          <div class="card qlist" id="qlist" aria-label="Business questions"></div>
+          <div class="card editor-card">
+            <div>
+              <div class="muted" id="qlabel">Question 1 of 17</div>
+              <h3 class="qtitle" id="qtitle">Loading…</h3>
+            </div>
+            <textarea class="sql" id="sql" spellcheck="false" aria-label="SQL query editor"></textarea>
+            <div class="toolbar">
+              <button class="btn btn-primary btn-sm" id="run" disabled>▶ Run query</button>
+              <button class="btn btn-ghost btn-sm" id="reset">Reset</button>
+              <a class="btn btn-ghost btn-sm" id="shot" href="#" target="_blank" rel="noopener">MySQL output</a>
+              <span class="status" id="status">Loading database…</span>
+            </div>
+            <div class="insight-line" id="insight"></div>
+            <div class="table-wrap result-wrap" id="result"><div class="loading">Loading the database (≈2 MB)…</div></div>
+            <p class="muted">Tip: press <kbd>Ctrl</kbd> + <kbd>Enter</kbd> to run. Tables: <code>netflix</code>, <code>netflix_content_costs</code>, <code>netflix_viewership</code>.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= SCHEMA ================= -->
+    <section class="section" id="schema">
+      <div class="container">
+        <div class="section-head">
+          <h2>Database <span class="gradient-text">schema</span></h2>
+          <p>Three tables joined on <code>show_id</code>. Before analysis I cleaned the data: blank directors and countries became NULL, missing ratings became “Not rated”, missing durations became “Unknown”, and date strings were converted to real dates.</p>
+        </div>
+        <div class="schema">
+          <div class="card"><h3><code>netflix</code></h3><span class="muted">8,807 rows · content details</span>
+            <ul><li class="pk">show_id <span>PK</span></li><li>type <span>text</span></li><li>title <span>text</span></li><li>director <span>text</span></li><li>cast <span>text</span></li><li>country <span>text</span></li><li>date_added <span>date</span></li><li>release_year <span>int</span></li><li>rating <span>text</span></li><li>duration <span>text</span></li><li>listed_in <span>text</span></li><li>description <span>text</span></li></ul></div>
+          <div class="card"><h3><code>netflix_content_costs</code></h3><span class="muted">8,807 rows · money</span>
+            <ul><li class="pk">show_id <span>FK</span></li><li>type <span>text</span></li><li>production_cost_million_usd <span>int</span></li><li>marketing_cost_million_usd <span>int</span></li><li>estimated_revenue_million_usd <span>int</span></li></ul></div>
+          <div class="card"><h3><code>netflix_viewership</code></h3><span class="muted">8,807 rows · audience</span>
+            <ul><li class="pk">show_id <span>FK</span></li><li>type <span>text</span></li><li>release_year <span>int</span></li><li>total_views_millions <span>int</span></li><li>avg_watch_time_minutes <span>int</span></li><li>peak_region <span>text</span></li></ul></div>
+        </div>
+        <p style="margin-top:14px"><a class="btn btn-ghost btn-sm" href="ER%20Diagram/Netflix%20ER%20Diagram.png" target="_blank" rel="noopener">View ER diagram</a></p>
+      </div>
+    </section>
+
+    <!-- ================= SKILLS ================= -->
+    <section class="section" id="skills">
+      <div class="container">
+        <div class="section-head"><h2>SQL skills <span class="gradient-text">shown</span></h2></div>
+        <div class="grid-3">
+          <div class="insight"><div class="ic">🧹</div><h3>Data cleaning</h3><p>UPDATE statements to standardise blanks into NULL or default labels before analysis, so counts and filters are accurate.</p></div>
+          <div class="insight"><div class="ic">🔗</div><h3>Joins across tables</h3><p>Content, cost and viewership tables joined on show_id to answer questions about profit and audience.</p></div>
+          <div class="insight"><div class="ic">🪜</div><h3>Window functions</h3><p>ROW_NUMBER() OVER (PARTITION BY …) to find the top rating and the top 3 most profitable titles within each type.</p></div>
+          <div class="insight"><div class="ic">🧩</div><h3>CTEs &amp; subqueries</h3><p>Multi-step logic split into readable CTEs, including a recursive CTE that splits comma-separated cast lists.</p></div>
+          <div class="insight"><div class="ic">🔤</div><h3>String &amp; date functions</h3><p>Pulled minutes and seasons out of text durations, matched patterns with LIKE, and filtered on date ranges.</p></div>
+          <div class="insight"><div class="ic">💡</div><h3>Business insight</h3><p>Each query answers a real question, like where content comes from, what's profitable and which region watches most.</p></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <span>© 2026 Nikhil More · Data Analyst</span>
+      <span>
+        <a href="https://nikhilmore2003.github.io/">Portfolio</a> ·
+        <a href="https://github.com/nikhilmore2003" target="_blank" rel="noopener">GitHub</a> ·
+        <a href="https://www.linkedin.com/in/nikhil-more-a43a2b259/" target="_blank" rel="noopener">LinkedIn</a> ·
+        <a href="mailto:nikhilmore2003430@gmail.com">Email</a>
+      </span>
+    </div>
+  </footer>
+
+  <script src="site/queries.js"></script>
+  <script src="site/vendor/sql-wasm.js"></script>
+  <script>
+  (function () {
+    var Q = window.NETFLIX_QUERIES, cur = 0, db = null;
+    var $ = function (id) { return document.getElementById(id); };
+    var MAX_ROWS = 300;
+
+    function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+
+    $("qlist").innerHTML = Q.map(function (q, i) {
+      return "<button class='qitem' data-i='" + i + "'><span class='qnum'>Q" + (i + 1) + "</span><span>" + esc(q.q) + "</span></button>";
+    }).join("");
+    $("qlist").addEventListener("click", function (e) {
+      var b = e.target.closest(".qitem"); if (!b) return;
+      select(+b.dataset.i, true);
+    });
+
+    function select(i, run) {
+      cur = i; var q = Q[i];
+      document.querySelectorAll(".qitem").forEach(function (b) { b.classList.toggle("active", +b.dataset.i === i); });
+      $("qlabel").textContent = "Question " + (i + 1) + " of " + Q.length;
+      $("qtitle").textContent = q.q;
+      $("sql").value = q.sql;
+      $("insight").textContent = q.insight ? "💡 " + q.insight : "";
+      var shot = $("shot");
+      if (q.shot) { shot.style.display = ""; shot.href = "Output/" + encodeURIComponent(q.shot); } else { shot.style.display = "none"; }
+      if (run && db) execute();
+    }
+
+    function execute() {
+      var sql = $("sql").value, st = $("status");
+      try {
+        var t0 = performance.now();
+        var res = db.exec(sql);
+        var ms = (performance.now() - t0).toFixed(0);
+        if (!res.length) { $("result").innerHTML = "<div class='loading'>Query ran. No rows returned.</div>"; st.className = "status"; st.textContent = "0 rows · " + ms + " ms"; return; }
+        var r = res[res.length - 1], cols = r.columns, rows = r.values;
+        var numeric = cols.map(function (_, c) { return rows.length && rows.every(function (row) { return row[c] === null || typeof row[c] === "number"; }); });
+        var html = "<table class='data'><thead><tr>" + cols.map(function (c, ci) { return "<th" + (numeric[ci] ? " class='num'" : "") + ">" + esc(c) + "</th>"; }).join("") + "</tr></thead><tbody>";
+        rows.slice(0, MAX_ROWS).forEach(function (row) {
+          html += "<tr>" + row.map(function (v, ci) {
+            if (v === null) return "<td class='null'>NULL</td>";
+            var s = typeof v === "number" && !Number.isInteger(v) ? v.toFixed(2) : String(v);
+            return "<td" + (numeric[ci] ? " class='num'" : "") + " title='" + esc(s) + "'>" + esc(s) + "</td>";
+          }).join("") + "</tr>";
+        });
+        html += "</tbody></table>";
+        $("result").innerHTML = html;
+        st.className = "status";
+        st.textContent = rows.length.toLocaleString("en-US") + " row" + (rows.length === 1 ? "" : "s") + (rows.length > MAX_ROWS ? " (showing first " + MAX_ROWS + ")" : "") + " · " + ms + " ms";
+      } catch (err) {
+        st.className = "status err"; st.textContent = "Error";
+        $("result").innerHTML = "<div class='loading' style='color:#f87171'>" + esc(err.message) + "</div>";
+      }
+    }
+
+    $("run").addEventListener("click", execute);
+    $("reset").addEventListener("click", function () { select(cur, true); });
+    $("sql").addEventListener("keydown", function (e) {
+      if ((e.ctrlKey || e.metaKey) && e.key === "Enter") { e.preventDefault(); if (db) execute(); }
+      if (e.key === "Tab") { e.preventDefault(); var t = e.target, s = t.selectionStart; t.value = t.value.slice(0, s) + "  " + t.value.slice(t.selectionEnd); t.selectionStart = t.selectionEnd = s + 2; }
+    });
+
+    select(0, false);
+
+    async function loadDb() {
+      var SQL = await initSqlJs({ locateFile: function (f) { return "site/vendor/" + f; } });
+      var resp = await fetch("site/netflix.db.gz");
+      if (!resp.ok) throw new Error("Could not download the database (" + resp.status + ")");
+      var buf;
+      var bytes = new Uint8Array(await resp.clone().arrayBuffer());
+      if (bytes[0] === 0x1f && bytes[1] === 0x8b && "DecompressionStream" in window) {
+        buf = await new Response(new Blob([bytes]).stream().pipeThrough(new DecompressionStream("gzip"))).arrayBuffer();
+      } else {
+        buf = bytes.buffer; // server already decompressed it
+      }
+      db = new SQL.Database(new Uint8Array(buf));
+    }
+    loadDb().then(function () {
+      $("run").disabled = false; $("status").textContent = "Database ready";
+      execute();
+    }).catch(function (e) {
+      $("status").className = "status err"; $("status").textContent = "Couldn't load database";
+      $("result").innerHTML = "<div class='loading'>" + esc(e.message) + "</div>";
+    });
+  })();
+  </script>
+</body>
+</html>
